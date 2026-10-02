@@ -1,0 +1,3421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Meu Consumo - Calculadora de Combustível
+    </title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        :root {
+
+            --primary: #198754;
+            --primary-dark: #146c43;
+
+            --blue: #0d6efd;
+            --red: #dc3545;
+
+            --background: #f4f6f8;
+
+            --card: #ffffff;
+
+            --text: #212529;
+
+            --muted: #6c757d;
+
+            --border: #dee2e6;
+
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                var(--background);
+
+            color:
+                var(--text);
+
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 25px;
+
+        }
+
+
+        /* HEADER */
+
+        header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary-dark),
+                    var(--primary)
+                );
+
+            color: white;
+
+            padding: 35px;
+
+            border-radius: 20px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        header h1 {
+
+            font-size: 32px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        header p {
+
+            opacity: .9;
+
+        }
+
+
+        /* GRID */
+
+        .grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+        }
+
+
+        .card {
+
+            background:
+                var(--card);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                18px;
+
+            padding:
+                22px;
+
+            margin-bottom:
+                20px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,.05);
+
+        }
+
+
+        .card h2 {
+
+            font-size:
+                19px;
+
+            margin-bottom:
+                18px;
+
+        }
+
+
+        /* FORM */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .form-group {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+        }
+
+
+        .full {
+
+            grid-column:
+                1 / -1;
+
+        }
+
+
+        label {
+
+            font-size:
+                13px;
+
+            font-weight:
+                bold;
+
+            margin-bottom:
+                6px;
+
+        }
+
+
+        input,
+        select {
+
+            padding:
+                12px;
+
+            border:
+                1px solid #ced4da;
+
+            border-radius:
+                10px;
+
+            font-size:
+                15px;
+
+        }
+
+
+        input:focus,
+        select:focus {
+
+            outline:
+                none;
+
+            border-color:
+                var(--primary);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(25,135,84,.12);
+
+        }
+
+
+        /* BUTTONS */
+
+        .buttons {
+
+            display:
+                flex;
+
+            gap:
+                10px;
+
+            margin-top:
+                18px;
+
+            flex-wrap:
+                wrap;
+
+        }
+
+
+        button {
+
+            border:
+                none;
+
+            padding:
+                12px 18px;
+
+            border-radius:
+                10px;
+
+            font-weight:
+                bold;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .btn-primary {
+
+            background:
+                var(--primary);
+
+            color:
+                white;
+
+        }
+
+
+        .btn-secondary {
+
+            background:
+                #e9ecef;
+
+            color:
+                #212529;
+
+        }
+
+
+        .btn-danger {
+
+            background:
+                var(--red);
+
+            color:
+                white;
+
+        }
+
+
+        /* CARDS DE RESULTADO */
+
+        .metrics {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap:
+                12px;
+
+        }
+
+
+        .metric {
+
+            background:
+                #f8f9fa;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                14px;
+
+            padding:
+                17px;
+
+        }
+
+
+        .metric span {
+
+            display:
+                block;
+
+            font-size:
+                12px;
+
+            color:
+                var(--muted);
+
+            margin-bottom:
+                5px;
+
+        }
+
+
+        .metric strong {
+
+            font-size:
+                22px;
+
+        }
+
+
+        /* COMBUSTÍVEIS */
+
+        .fuel-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap:
+                20px;
+
+        }
+
+
+        .fuel-card {
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                16px;
+
+            padding:
+                20px;
+
+        }
+
+
+        .fuel-card h3 {
+
+            margin-bottom:
+                15px;
+
+        }
+
+
+        .ethanol {
+
+            border-top:
+                5px solid var(--primary);
+
+        }
+
+
+        .gasoline {
+
+            border-top:
+                5px solid var(--blue);
+
+        }
+
+
+        .fuel-value {
+
+            font-size:
+                28px;
+
+            font-weight:
+                bold;
+
+            margin:
+                8px 0;
+
+        }
+
+
+        .fuel-info {
+
+            color:
+                var(--muted);
+
+            font-size:
+                14px;
+
+            line-height:
+                1.8;
+
+        }
+
+
+        /* WINNER */
+
+        .winner {
+
+            background:
+                #eaf7ef;
+
+            border:
+                1px solid #bce3ca;
+
+            border-radius:
+                15px;
+
+            padding:
+                20px;
+
+            margin-bottom:
+                20px;
+
+        }
+
+
+        .winner strong {
+
+            display:
+                block;
+
+            font-size:
+                27px;
+
+            color:
+                var(--primary-dark);
+
+            margin:
+                5px 0;
+
+        }
+
+
+        /* TABLE */
+
+        .table-container {
+
+            overflow-x:
+                auto;
+
+        }
+
+
+        table {
+
+            width:
+                100%;
+
+            border-collapse:
+                collapse;
+
+        }
+
+
+        th,
+        td {
+
+            padding:
+                13px;
+
+            border-bottom:
+                1px solid var(--border);
+
+            text-align:
+                right;
+
+        }
+
+
+        th:first-child,
+        td:first-child {
+
+            text-align:
+                left;
+
+        }
+
+
+        th {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+        }
+
+
+        /* HISTÓRICO */
+
+        .history-item {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            padding:
+                15px 0;
+
+            border-bottom:
+                1px solid var(--border);
+
+        }
+
+
+        .history-info {
+
+            line-height:
+                1.7;
+
+            font-size:
+                14px;
+
+        }
+
+
+        .history-value {
+
+            text-align:
+                right;
+
+            font-weight:
+                bold;
+
+        }
+
+
+        /* ALERTA */
+
+        .alert {
+
+            padding:
+                15px;
+
+            border-radius:
+                12px;
+
+            background:
+                #fff8e1;
+
+            border:
+                1px solid #ffe08a;
+
+            margin-top:
+                15px;
+
+            line-height:
+                1.6;
+
+        }
+
+
+        .note {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+            margin-top:
+                10px;
+
+            line-height:
+                1.5;
+
+        }
+
+
+        /* LOGIN */
+
+        [hidden] {
+            display: none !important;
+        }
+
+
+        .login-screen {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 32px;
+            background:
+                radial-gradient(ellipse at 15% 15%, #e0f2e8 0, transparent 36%),
+                var(--background);
+        }
+
+
+        .login-layout {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            width: min(100%, 1000px);
+            min-height: 590px;
+            overflow: hidden;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 24px 70px rgba(20, 60, 40, .12);
+        }
+
+
+        .login-story {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 42px;
+            color: white;
+            background: linear-gradient(145deg, #0a2d1f, #198754);
+        }
+
+
+        .login-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            aspect-ratio: 1;
+            border: 1px solid rgba(255, 255, 255, .35);
+            border-radius: 12px;
+            font-size: 21px;
+        }
+
+
+        .story-copy {
+            max-width: 390px;
+            margin: 55px 0;
+        }
+
+
+        .story-copy .eyebrow {
+            margin-bottom: 16px;
+            color: #b6e5c8;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+
+        .story-copy h1 {
+            margin-bottom: 14px;
+            font-size: clamp(32px, 4vw, 44px);
+            line-height: 1.08;
+        }
+
+
+        .story-copy p {
+            color: rgba(255, 255, 255, .8);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        .story-stat {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, .25);
+        }
+
+
+        .story-stat span,
+        .story-stat strong {
+            display: block;
+        }
+
+
+        .story-stat span {
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, .72);
+            font-size: 12px;
+        }
+
+
+        .story-stat strong {
+            font-size: 22px;
+        }
+
+
+        .login-form-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 52px clamp(28px, 6vw, 64px);
+        }
+
+
+        .login-form-panel h2 {
+            margin-bottom: 9px;
+            font-size: 28px;
+        }
+
+
+        .login-intro {
+            margin-bottom: 30px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        .login-fields {
+            display: grid;
+            gap: 19px;
+        }
+
+
+        .login-fields label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+
+        .login-fields input {
+            width: 100%;
+            min-height: 48px;
+            border-radius: 8px;
+        }
+
+
+        .login-submit {
+            width: 100%;
+            min-height: 48px;
+            margin-top: 5px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            font-size: 15px;
+        }
+
+
+        .login-submit:hover {
+            background: var(--primary-dark);
+        }
+
+
+        .auth-switch {
+            width: 100%;
+            margin-top: 18px;
+            padding: 8px;
+            background: transparent;
+            color: var(--primary-dark);
+            font-size: 14px;
+        }
+
+
+        .auth-switch:hover {
+            text-decoration: underline;
+        }
+
+
+        .auth-message {
+            margin-top: 14px;
+            color: #b02a37;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        .login-demo-note {
+            margin-top: 22px;
+            padding-top: 17px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+
+        .step-label {
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+
+        .header-actions span {
+            font-size: 14px;
+        }
+
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+
+        .comparison-result {
+            margin-bottom: 18px;
+            padding: 20px;
+            border: 1px solid #bce3ca;
+            border-radius: 12px;
+            background: #eaf7ef;
+        }
+
+
+        .comparison-result strong {
+            display: block;
+            margin-top: 5px;
+            color: var(--primary-dark);
+            font-size: 25px;
+        }
+
+
+        .price-reference {
+            padding: 15px;
+            border-left: 4px solid #e2a900;
+            background: #fff8e1;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        /* RESPONSIVO */
+
+        @media(max-width: 900px) {
+
+            .grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .metrics {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media(max-width: 650px) {
+
+            .login-screen {
+                padding: 14px;
+            }
+
+
+            .login-layout {
+                grid-template-columns: 1fr;
+            }
+
+
+            .login-story {
+                min-height: 290px;
+                padding: 25px;
+            }
+
+
+            .story-copy {
+                margin: 30px 0;
+            }
+
+
+            .story-copy h1 {
+                font-size: 32px;
+            }
+
+
+            .story-stat {
+                padding-top: 15px;
+            }
+
+
+            .login-form-panel {
+                padding: 32px 25px;
+            }
+
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+
+                padding:
+                    12px;
+
+            }
+
+
+            header {
+
+                padding:
+                    25px 20px;
+
+            }
+
+
+            header h1 {
+
+                font-size:
+                    25px;
+
+            }
+
+
+            .form-grid,
+            .fuel-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .metrics {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .buttons button {
+
+                width:
+                    100%;
+
+            }
+
+
+            .history-item {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .history-value {
+
+                text-align:
+                    left;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="login-screen" id="loginScreen">
+    <div class="login-layout">
+        <section class="login-story" aria-label="Meu Consumo">
+            <div class="login-brand">
+                <span class="brand-mark" aria-hidden="true">M</span>
+                <span>Meu Consumo</span>
+            </div>
+
+            <div class="story-copy">
+                <p class="eyebrow">Seu carro, seus dados</p>
+                <h1>Mais clareza a cada quilômetro.</h1>
+                <p>Acompanhe abastecimentos, entenda seu consumo e compare o custo entre etanol e gasolina.</p>
+            </div>
+
+            <div class="story-stat" aria-label="Resumo demonstrativo">
+                <div>
+                    <span>Consumo médio</span>
+                    <strong>12,8 km/L</strong>
+                </div>
+                <div>
+                    <span>Comparação</span>
+                    <strong>Etanol x Gasolina</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="login-form-panel" aria-labelledby="loginTitle">
+            <p class="step-label" id="authStepLabel">Etapa 1 · Login</p>
+            <h2 id="loginTitle">Acessar conta</h2>
+            <p class="login-intro" id="loginIntro">Entre com seu e-mail e senha para acessar seus dados.</p>
+
+            <form class="login-fields" id="loginForm">
+                <div id="profileNameGroup" hidden>
+                    <label for="profileName">Nome</label>
+                    <input id="profileName" name="name" autocomplete="name" placeholder="Seu nome" required>
+                </div>
+
+                <div>
+                    <label for="profileEmail">E-mail</label>
+                    <input id="profileEmail" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
+                </div>
+
+                <div id="profilePhoneGroup" hidden>
+                    <label for="profilePhone">Telefone</label>
+                    <input id="profilePhone" name="phone" type="tel" autocomplete="tel" placeholder="(11) 99999-9999" required>
+                </div>
+
+                <div id="profileCityGroup" hidden>
+                    <label for="profileCity">Cidade/UF</label>
+                    <input id="profileCity" name="city" autocomplete="address-level2" placeholder="Ex.: Campinas/SP" required>
+                </div>
+
+                <div id="passwordGroup">
+                    <label for="authPassword">Senha</label>
+                    <input id="authPassword" name="password" type="password" autocomplete="current-password" placeholder="Sua senha" required minlength="8">
+                </div>
+
+                <div id="confirmPasswordGroup" hidden>
+                    <label for="confirmPassword">Confirmar senha</label>
+                    <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Digite a senha novamente" required minlength="8">
+                </div>
+
+                <p class="auth-message" id="authMessage" role="alert" hidden></p>
+
+                <button class="login-submit" id="authSubmit" type="submit">Entrar</button>
+            </form>
+
+            <button class="auth-switch" id="authSwitch" type="button">Não tem cadastro? Criar conta</button>
+
+            <p class="login-demo-note">Conta demonstrativa: os dados e a senha protegida ficam neste navegador. O acesso não sincroniza entre dispositivos porque ainda não há servidor.</p>
+        </section>
+    </div>
+</main>
+
+
+<div class="container" id="appContent" hidden>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>
+            🚗 Meu Consumo
+        </h1>
+
+        <p>
+            Descubra quanto seu carro realmente faz por litro
+            e compare etanol e gasolina.
+        </p>
+
+        <div class="header-actions">
+            <span id="userGreeting"></span>
+            <button class="btn-secondary" type="button" onclick="editProfile()">Editar cadastro</button>
+        </div>
+
+    </header>
+
+
+    <!-- VEÍCULO -->
+
+    <section class="card">
+
+        <p class="step-label">Etapa 2 · Veículo</p>
+
+        <h2>
+            🚘 Meu veículo
+        </h2>
+
+
+        <div class="form-grid" id="vehicleForm">
+
+
+            <div class="form-group">
+
+                <label for="vehicle">
+                    Modelo
+                </label>
+
+                <input
+                    id="vehicle"
+                    placeholder="Ex.: T-Cross"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="vehicleYear">Ano</label>
+
+                <input
+                    type="number"
+                    id="vehicleYear"
+                    min="1900"
+                    max="2100"
+                    placeholder="Ex.: 2022"
+                >
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- CONSUMO -->
+
+    <section class="card">
+
+        <p class="step-label">Etapa 3 · Consumo</p>
+
+        <h2>Consumo médio do veículo</h2>
+
+        <div class="metrics" aria-live="polite">
+            <div class="metric">
+                <span>Média no álcool</span>
+                <strong><output id="ethanolEfficiency">--</output> km/L</strong>
+            </div>
+            <div class="metric">
+                <span>Média na gasolina</span>
+                <strong><output id="gasolineEfficiency">--</output> km/L</strong>
+            </div>
+        </div>
+
+        <p class="note">O consumo é descoberto pelos abastecimentos registrados. Para calcular cada combustível, registre ao menos dois abastecimentos com tanque cheio e informe corretamente odômetro e litros.</p>
+
+    </section>
+
+
+    <!-- RESULTADO -->
+
+    <section class="card">
+
+        <p class="step-label">Etapa 4 · Resultado</p>
+
+        <h2>Qual combustível compensa?</h2>
+
+        <div class="comparison-result" aria-live="polite">
+            <span>Comparação pelo custo real</span>
+            <strong id="priceDecision">Preencha consumo e preços</strong>
+        </div>
+
+        <div class="result-grid">
+            <div class="metric">
+                <span>Custo do álcool por km</span>
+                <strong id="ethanolUnitCost">--</strong>
+            </div>
+            <div class="metric">
+                <span>Custo da gasolina por km</span>
+                <strong id="gasolineUnitCost">--</strong>
+            </div>
+            <div class="metric">
+                <span>Preço máximo do álcool para empatar</span>
+                <strong id="maximumEthanolPrice">--</strong>
+            </div>
+        </div>
+
+        <div class="price-reference" id="priceReference">
+            Os preços e a referência de 70% serão calculados pelos abastecimentos registrados.
+        </div>
+
+    </section>
+
+
+    <!-- ABASTECIMENTO -->
+
+    <section class="card">
+
+        <p class="step-label">Etapa 5 · Histórico</p>
+
+        <h2>
+            ⛽ Registrar abastecimento
+        </h2>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Data
+                </label>
+
+                <input
+                    type="date"
+                    id="date"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Combustível
+                </label>
+
+                <select id="fuel">
+
+                    <option value="Etanol">
+                        Etanol
+                    </option>
+
+                    <option value="Gasolina">
+                        Gasolina
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Odômetro no abastecimento
+                </label>
+
+                <input
+                    type="number"
+                    id="odometer"
+                    placeholder="Ex.: 50250"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Litros abastecidos
+                </label>
+
+                <input
+                    type="number"
+                    id="liters"
+                    step="0.01"
+                    placeholder="Ex.: 40"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Preço por litro
+                </label>
+
+                <input
+                    type="number"
+                    id="price"
+                    step="0.01"
+                    placeholder="Ex.: 5.79"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Tanque completado?
+                </label>
+
+                <select id="fullTank">
+
+                    <option value="sim">
+                        Sim
+                    </option>
+
+                    <option value="nao">
+                        Não
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button
+                class="btn-primary"
+                onclick="addFuel()"
+            >
+
+                ➕ Registrar abastecimento
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="note"
+        >
+
+            💡 Para calcular o consumo corretamente,
+            o ideal é registrar abastecimentos com
+            <b>tanque completado</b>.
+
+        </div>
+
+    </section>
+
+
+    <!-- DASHBOARD -->
+
+    <section class="card">
+
+        <h2>
+            📊 Resumo do consumo
+        </h2>
+
+
+        <div
+            class="metrics"
+            id="dashboard"
+        ></div>
+
+    </section>
+
+
+    <!-- COMPARAÇÃO -->
+
+    <section class="card">
+
+        <h2>
+            ⚖️ Etanol x Gasolina
+        </h2>
+
+
+        <div
+            id="winner"
+            class="winner"
+        ></div>
+
+
+        <div
+            class="fuel-grid"
+        >
+
+
+            <!-- ETANOL -->
+
+            <div
+                class="fuel-card ethanol"
+            >
+
+                <h3>
+                    🟢 Etanol
+                </h3>
+
+
+                <div
+                    id="ethanolKmL"
+                    class="fuel-value"
+                >
+                    --
+                </div>
+
+
+                <div
+                    class="fuel-info"
+                    id="ethanolInfo"
+                >
+                </div>
+
+            </div>
+
+
+            <!-- GASOLINA -->
+
+            <div
+                class="fuel-card gasoline"
+            >
+
+                <h3>
+                    🔵 Gasolina
+                </h3>
+
+
+                <div
+                    id="gasolineKmL"
+                    class="fuel-value"
+                >
+                    --
+                </div>
+
+
+                <div
+                    class="fuel-info"
+                    id="gasolineInfo"
+                >
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            id="comparisonAlert"
+            class="alert"
+        ></div>
+
+    </section>
+
+
+    <!-- HISTÓRICO -->
+
+    <section class="card">
+
+        <h2>
+            📋 Histórico de abastecimentos
+        </h2>
+
+
+        <div
+            id="history"
+        ></div>
+
+
+        <div class="buttons">
+
+            <button
+                class="btn-danger"
+                onclick="clearHistory()"
+            >
+
+                🗑️ Apagar histórico
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   FUNÇÕES AUXILIARES
+========================================= */
+
+
+function number(id) {
+
+    return Number(
+        document.getElementById(id).value
+    ) || 0;
+
+}
+
+
+function money(value) {
+
+    return value.toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
+
+}
+
+
+function moneyPerKm(value) {
+
+    return value.toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL",
+            minimumFractionDigits: 3,
+            maximumFractionDigits: 3
+        }
+    );
+
+}
+
+
+function today() {
+
+    const date =
+        new Date();
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+/* =========================================
+   HISTÓRICO
+========================================= */
+
+
+function getHistory() {
+
+    return JSON.parse(
+        localStorage.getItem(
+            "fuelHistory"
+        ) || "[]"
+    );
+
+}
+
+
+function saveHistory(history) {
+
+    localStorage.setItem(
+        "fuelHistory",
+        JSON.stringify(history)
+    );
+
+}
+
+
+function readSavedData(key) {
+
+    try {
+
+        const savedData =
+            JSON.parse(
+                localStorage.getItem(key) || "{}"
+            );
+
+        return savedData && typeof savedData === "object"
+            ? savedData
+            : {};
+
+    } catch {
+
+        return {};
+
+    }
+
+}
+
+
+function restoreFields(key, fieldIds) {
+
+    const savedData =
+        readSavedData(key);
+
+    fieldIds.forEach(
+        fieldId => {
+
+            const field =
+                document.getElementById(fieldId);
+
+            if (savedData[fieldId] !== undefined) {
+                field.value = savedData[fieldId];
+            }
+
+        }
+    );
+
+    return savedData;
+
+}
+
+
+function saveFields(key, fieldIds) {
+
+    const savedData = {};
+
+    fieldIds.forEach(
+        fieldId => {
+            savedData[fieldId] =
+                document.getElementById(fieldId).value;
+        }
+    );
+
+    localStorage.setItem(
+        key,
+        JSON.stringify(savedData)
+    );
+
+    return savedData;
+
+}
+
+
+let authMode = "login";
+
+
+document.getElementById(
+    "loginForm"
+).addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+        const submitButton =
+            document.getElementById("authSubmit");
+
+        submitButton.disabled = true;
+        document.getElementById("authMessage").hidden = true;
+
+        try {
+
+            const email =
+                document.getElementById("profileEmail").value.trim().toLowerCase();
+
+            if (authMode === "profile") {
+
+                const profile =
+                    saveFields("driverProfile", profileFieldIds);
+
+                showApp(profile);
+                return;
+
+            }
+
+            const password =
+                document.getElementById("authPassword").value;
+
+            if (authMode === "register") {
+
+                const existingCredential =
+                    readSavedData("driverCredential");
+
+                if (existingCredential.email) {
+                    setAuthMode("login");
+                    showAuthMessage("Já existe uma conta neste navegador. Entre com seu e-mail e senha.");
+                    return;
+                }
+
+                const confirmation =
+                    document.getElementById("confirmPassword").value;
+
+                if (password !== confirmation) {
+                    showAuthMessage("As senhas não coincidem.");
+                    return;
+                }
+
+                document.getElementById("profileEmail").value = email;
+
+                const profile =
+                    saveFields("driverProfile", profileFieldIds);
+
+                const salt =
+                    createSalt();
+
+                const passwordHash =
+                    await hashPassword(password, salt);
+
+                localStorage.setItem(
+                    "driverCredential",
+                    JSON.stringify({
+                        email: email,
+                        salt: salt,
+                        passwordHash: passwordHash
+                    })
+                );
+
+                showApp(profile);
+                return;
+
+            }
+
+            const credential =
+                readSavedData("driverCredential");
+
+            if (!credential.email) {
+                showAuthMessage("Ainda não há cadastro neste navegador. Escolha “Criar conta” para se cadastrar.");
+                return;
+            }
+
+            const passwordHash =
+                await hashPassword(password, credential.salt);
+
+            if (
+                email !== credential.email ||
+                passwordHash !== credential.passwordHash
+            ) {
+                showAuthMessage("E-mail ou senha incorretos.");
+                return;
+            }
+
+            showApp(
+                readSavedData("driverProfile")
+            );
+
+        } catch {
+
+            showAuthMessage("Não foi possível validar o acesso neste navegador.");
+
+        } finally {
+
+            submitButton.disabled = false;
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "authSwitch"
+).addEventListener(
+    "click",
+    function () {
+
+        if (authMode === "login") {
+
+            const savedProfile =
+                readSavedData("driverProfile");
+
+            profileFieldIds.forEach(
+                fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (savedProfile[fieldId] !== undefined) {
+                        field.value = savedProfile[fieldId];
+                    }
+                }
+            );
+
+            setAuthMode("register");
+            return;
+
+        }
+
+        setAuthMode("login");
+
+    }
+);
+
+
+function updateGreeting(profile) {
+
+    const firstName =
+        profile.profileName
+            ? profile.profileName.trim().split(/\s+/)[0]
+            : "";
+
+    document.getElementById(
+        "userGreeting"
+    ).textContent = firstName
+        ? `Olá, ${firstName}`
+        : "";
+
+}
+
+
+function setAuthMode(mode) {
+
+    authMode = mode;
+
+    const isLogin = mode === "login";
+    const isRegistration = mode === "register";
+    const isProfileEdit = mode === "profile";
+
+    document.getElementById("profileNameGroup").hidden = isLogin;
+    document.getElementById("profilePhoneGroup").hidden = isLogin;
+    document.getElementById("profileCityGroup").hidden = isLogin;
+    document.getElementById("confirmPasswordGroup").hidden = !isRegistration;
+    document.getElementById("passwordGroup").hidden = isProfileEdit;
+
+    document.getElementById("profileName").required = !isLogin;
+    document.getElementById("profilePhone").required = !isLogin;
+    document.getElementById("profileCity").required = !isLogin;
+    document.getElementById("authPassword").required = !isProfileEdit;
+    document.getElementById("confirmPassword").required = isRegistration;
+    document.getElementById("profileEmail").readOnly = isProfileEdit;
+
+    document.getElementById("authStepLabel").textContent =
+        isLogin ? "Etapa 1 · Login" :
+        isRegistration ? "Etapa 1 · Cadastro" :
+        "Cadastro";
+
+    document.getElementById("loginTitle").textContent =
+        isLogin ? "Acessar conta" :
+        isRegistration ? "Criar conta" :
+        "Editar cadastro";
+
+    document.getElementById("loginIntro").textContent =
+        isLogin ? "Entre com seu e-mail e senha para acessar seus dados." :
+        isRegistration ? "Preencha seus dados e crie uma senha para continuar." :
+        "Atualize seus dados pessoais.";
+
+    document.getElementById("authSubmit").textContent =
+        isLogin ? "Entrar" :
+        isRegistration ? "Criar conta e continuar" :
+        "Salvar alterações";
+
+    const authSwitch =
+        document.getElementById("authSwitch");
+
+    authSwitch.textContent = isLogin
+        ? "Não tem cadastro? Criar conta"
+        : "Já tem cadastro? Entrar";
+
+    authSwitch.hidden = isProfileEdit ||
+        Boolean(readSavedData("driverCredential").email);
+
+    document.getElementById("authMessage").hidden = true;
+
+}
+
+
+function showAuthMessage(message) {
+
+    const authMessage =
+        document.getElementById("authMessage");
+
+    authMessage.textContent = message;
+    authMessage.hidden = false;
+
+}
+
+
+function createSalt() {
+
+    return Array.from(
+        crypto.getRandomValues(new Uint8Array(16)),
+        byte => byte.toString(16).padStart(2, "0")
+    ).join("");
+
+}
+
+
+async function hashPassword(password, saltHex) {
+
+    const salt =
+        new Uint8Array(
+            saltHex.match(/.{2}/g).map(byte => parseInt(byte, 16))
+        );
+
+    const key =
+        await crypto.subtle.importKey(
+            "raw",
+            new TextEncoder().encode(password),
+            "PBKDF2",
+            false,
+            ["deriveBits"]
+        );
+
+    const result =
+        await crypto.subtle.deriveBits(
+            {
+                name: "PBKDF2",
+                salt: salt,
+                iterations: 120000,
+                hash: "SHA-256"
+            },
+            key,
+            256
+        );
+
+    return Array.from(
+        new Uint8Array(result),
+        byte => byte.toString(16).padStart(2, "0")
+    ).join("");
+
+}
+
+
+function showApp(profile) {
+
+    updateGreeting(profile);
+
+    document.getElementById("loginScreen").hidden = true;
+    document.getElementById("appContent").hidden = false;
+
+}
+
+
+function saveVehicleData() {
+
+    saveFields(
+        "vehicleData",
+        vehicleFieldIds
+    );
+
+    calculatePriceComparison();
+
+}
+
+
+function editProfile() {
+
+    restoreFields(
+        "driverProfile",
+        profileFieldIds
+    );
+
+    setAuthMode("profile");
+
+    document.getElementById(
+        "appContent"
+    ).hidden = true;
+
+    document.getElementById(
+        "loginScreen"
+    ).hidden = false;
+
+    window.scrollTo(0, 0);
+
+}
+
+
+function averageFuelPrice(records) {
+
+    const totalLiters =
+        records.reduce(
+            (total, record) => total + Number(record.liters || 0),
+            0
+        );
+
+    const totalSpent =
+        records.reduce(
+            (total, record) =>
+                total + Number(record.total || record.price * record.liters || 0),
+            0
+        );
+
+    return totalLiters > 0
+        ? totalSpent / totalLiters
+        : 0;
+
+}
+
+
+function calculatePriceComparison() {
+
+    const history =
+        getHistory();
+
+    const ethanolPrice =
+        averageFuelPrice(
+            history.filter(record => record.fuel === "Etanol")
+        );
+
+    const gasolinePrice =
+        averageFuelPrice(
+            history.filter(record => record.fuel === "Gasolina")
+        );
+
+    const ethanolEfficiency =
+        Number(
+            document.getElementById("ethanolEfficiency").textContent
+        ) || 0;
+
+    const gasolineEfficiency =
+        Number(
+            document.getElementById("gasolineEfficiency").textContent
+        ) || 0;
+
+    const decision =
+        document.getElementById("priceDecision");
+
+    const ethanolCostElement =
+        document.getElementById("ethanolUnitCost");
+
+    const gasolineCostElement =
+        document.getElementById("gasolineUnitCost");
+
+    const maximumEthanolElement =
+        document.getElementById("maximumEthanolPrice");
+
+    const reference =
+        document.getElementById("priceReference");
+
+    if (gasolinePrice > 0) {
+
+        const referencePrice =
+            gasolinePrice * 0.70;
+
+        const ethanolShare =
+            ethanolPrice > 0
+                ? ` O álcool está em ${(ethanolPrice / gasolinePrice * 100).toFixed(1)}% do preço médio da gasolina.`
+                : " Registre um abastecimento de álcool para comparar os preços.";
+
+        reference.innerHTML = `
+            <b>Referência visual de 70%:</b>
+            ${money(gasolinePrice)} × 0,70 = <b>${money(referencePrice)}/L</b>.
+            ${ethanolShare}
+            O resultado considera os preços médios registrados e o consumo real do veículo.
+        `;
+
+    } else {
+
+        reference.textContent =
+            "Registre abastecimentos para calcular os preços médios e a referência de 70%.";
+
+    }
+
+
+    if (ethanolEfficiency <= 0 || gasolineEfficiency <= 0) {
+
+        decision.textContent =
+            "Registre abastecimentos com tanque cheio para descobrir o consumo";
+
+        ethanolCostElement.textContent = "--";
+        gasolineCostElement.textContent = "--";
+        maximumEthanolElement.textContent = "--";
+
+        return;
+
+    }
+
+
+    if (ethanolPrice <= 0 || gasolinePrice <= 0) {
+
+        decision.textContent =
+            "Registre abastecimentos dos dois combustíveis";
+
+        ethanolCostElement.textContent = "--";
+        gasolineCostElement.textContent = "--";
+        maximumEthanolElement.textContent = "--";
+
+        return;
+
+    }
+
+    const ethanolCost =
+        ethanolPrice / ethanolEfficiency;
+
+    const gasolineCost =
+        gasolinePrice / gasolineEfficiency;
+
+    const maximumEthanolPrice =
+        gasolinePrice *
+        (ethanolEfficiency / gasolineEfficiency);
+
+    ethanolCostElement.textContent =
+        moneyPerKm(ethanolCost);
+
+    gasolineCostElement.textContent =
+        moneyPerKm(gasolineCost);
+
+    maximumEthanolElement.textContent =
+        money(maximumEthanolPrice) + "/L";
+
+    if (Math.abs(ethanolCost - gasolineCost) < 0.000001) {
+        decision.textContent = "Empate no custo por km";
+    } else if (ethanolCost < gasolineCost) {
+        decision.textContent = "Álcool compensa";
+    } else {
+        decision.textContent = "Gasolina compensa";
+    }
+
+}
+
+
+/* =========================================
+   ADICIONAR ABASTECIMENTO
+========================================= */
+
+
+function addFuel() {
+
+
+    const date =
+        document.getElementById(
+            "date"
+        ).value;
+
+
+    const fuel =
+        document.getElementById(
+            "fuel"
+        ).value;
+
+
+    const odometer =
+        number(
+            "odometer"
+        );
+
+
+    const liters =
+        number(
+            "liters"
+        );
+
+
+    const price =
+        number(
+            "price"
+        );
+
+
+    const fullTank =
+        document.getElementById(
+            "fullTank"
+        ).value;
+
+
+    /* VALIDAÇÃO */
+
+    if (
+        !date ||
+        !odometer ||
+        !liters ||
+        !price
+    ) {
+
+        alert(
+            "Preencha todos os campos do abastecimento."
+        );
+
+        return;
+
+    }
+
+
+    const history =
+        getHistory();
+
+
+    /* NÃO PERMITIR ODÔMETRO MENOR */
+
+    if (history.length > 0) {
+
+        const last =
+            history[0];
+
+        if (
+            odometer <=
+            last.odometer
+        ) {
+
+            alert(
+                "O odômetro precisa ser maior que o abastecimento anterior."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    const total =
+        liters * price;
+
+
+    const record = {
+
+        id:
+            Date.now(),
+
+        date:
+            date,
+
+        fuel:
+            fuel,
+
+        odometer:
+            odometer,
+
+        liters:
+            liters,
+
+        price:
+            price,
+
+        total:
+            total,
+
+        fullTank:
+            fullTank
+
+    };
+
+
+    history.unshift(
+        record
+    );
+
+
+    saveHistory(
+        history
+    );
+
+
+    /* LIMPAR CAMPOS */
+
+    document.getElementById(
+        "odometer"
+    ).value = "";
+
+
+    document.getElementById(
+        "liters"
+    ).value = "";
+
+
+    document.getElementById(
+        "price"
+    ).value = "";
+
+
+    calculate();
+
+
+    renderHistory();
+
+}
+
+
+/* =========================================
+   CALCULAR CONSUMO
+========================================= */
+
+
+function calculate() {
+
+
+    const history =
+        getHistory();
+
+
+    if (
+        history.length === 0
+    ) {
+
+        showEmpty();
+
+        updateFuelCard("ethanol", null);
+        updateFuelCard("gasoline", null);
+        updateConsumptionAverages(null, null);
+        compareFuel(null, null);
+        calculatePriceComparison();
+
+        return;
+
+    }
+
+
+    /* SEPARAR COMBUSTÍVEIS */
+
+    const ethanol =
+        history.filter(
+            item =>
+                item.fuel === "Etanol"
+        );
+
+
+    const gasoline =
+        history.filter(
+            item =>
+                item.fuel === "Gasolina"
+        );
+
+
+    const ethanolData =
+        calculateFuel(
+            ethanol
+        );
+
+
+    const gasolineData =
+        calculateFuel(
+            gasoline
+        );
+
+
+    updateConsumptionAverages(
+        ethanolData,
+        gasolineData
+    );
+
+
+    updateFuelCard(
+        "ethanol",
+        ethanolData
+    );
+
+
+    updateFuelCard(
+        "gasoline",
+        gasolineData
+    );
+
+
+    calculateDashboard(
+        history
+    );
+
+
+    compareFuel(
+        ethanolData,
+        gasolineData
+    );
+
+
+    calculatePriceComparison();
+
+}
+
+
+function updateConsumptionAverages(
+    ethanolData,
+    gasolineData
+) {
+
+    document.getElementById(
+        "ethanolEfficiency"
+    ).textContent = ethanolData && ethanolData.averageKmL > 0
+        ? ethanolData.averageKmL.toFixed(2)
+        : "--";
+
+    document.getElementById(
+        "gasolineEfficiency"
+    ).textContent = gasolineData && gasolineData.averageKmL > 0
+        ? gasolineData.averageKmL.toFixed(2)
+        : "--";
+
+}
+
+
+/* =========================================
+   CALCULAR COMBUSTÍVEL
+========================================= */
+
+
+function calculateFuel(
+    records
+) {
+
+
+    if (
+        records.length < 2
+    ) {
+
+        return null;
+
+    }
+
+
+    /*
+        Precisamos de dois
+        abastecimentos com tanque cheio.
+
+        Exemplo:
+
+        50.000 km
+        40 litros
+
+        50.400 km
+        42 litros
+
+        Distância:
+        400 km
+
+        Consumo:
+        400 / 42
+    */
+
+
+    let totalKm = 0;
+
+    let totalLiters = 0;
+
+    let totalSpent = 0;
+
+    let measurements = [];
+
+
+    for (
+        let i = 1;
+        i < records.length;
+        i++
+    ) {
+
+
+        const previous =
+            records[i];
+
+        const current =
+            records[i - 1];
+
+
+        /*
+            O consumo entre dois
+            abastecimentos só será
+            calculado quando o
+            abastecimento atual
+            estiver com tanque cheio.
+        */
+
+        if (
+            current.fullTank === "sim" &&
+            previous.fullTank === "sim"
+        ) {
+
+
+            const km =
+                current.odometer -
+                previous.odometer;
+
+
+            const liters =
+                current.liters;
+
+
+            if (
+                km > 0 &&
+                liters > 0
+            ) {
+
+                const kmL =
+                    km / liters;
+
+
+                measurements.push({
+                    km: km,
+                    liters: liters,
+                    kmL: kmL
+                });
+
+
+                totalKm += km;
+
+                totalLiters += liters;
+
+            }
+
+        }
+
+
+        totalSpent +=
+            previous.total;
+
+    }
+
+
+    /*
+        MÉDIA REAL
+    */
+
+    let averageKmL = 0;
+
+
+    if (
+        totalLiters > 0
+    ) {
+
+        averageKmL =
+            totalKm /
+            totalLiters;
+
+    }
+
+
+    /*
+        PREÇO MÉDIO
+    */
+
+    let litersPrice = 0;
+
+
+    records.forEach(
+        record => {
+
+            litersPrice +=
+                record.total;
+
+        }
+    );
+
+
+    let totalFuelLiters =
+        records.reduce(
+            (
+                sum,
+                record
+            ) =>
+                sum +
+                record.liters,
+            0
+        );
+
+
+    let averagePrice =
+        totalFuelLiters > 0
+            ? litersPrice /
+              totalFuelLiters
+            : 0;
+
+
+    /*
+        CUSTO POR KM
+    */
+
+    const costKm =
+        averageKmL > 0
+            ? averagePrice /
+              averageKmL
+            : 0;
+
+
+    return {
+
+        averageKmL:
+            averageKmL,
+
+        averagePrice:
+            averagePrice,
+
+        costKm:
+            costKm,
+
+        totalKm:
+            totalKm,
+
+        totalLiters:
+            totalLiters,
+
+        measurements:
+            measurements
+
+    };
+
+}
+
+
+/* =========================================
+   ATUALIZAR CARD
+========================================= */
+
+
+function updateFuelCard(
+    fuel,
+    data
+) {
+
+
+    const kmElement =
+        document.getElementById(
+            fuel + "KmL"
+        );
+
+
+    const infoElement =
+        document.getElementById(
+            fuel + "Info"
+        );
+
+
+    if (!data) {
+
+        kmElement.innerText =
+            "--";
+
+        infoElement.innerHTML = `
+
+            Ainda não existem
+            dados suficientes para
+            calcular o consumo.
+
+            <br><br>
+
+            Registre pelo menos
+            dois abastecimentos
+            desse combustível
+            com tanque cheio.
+
+        `;
+
+        return;
+
+    }
+
+
+    kmElement.innerText =
+        data.averageKmL.toFixed(
+            2
+        ) + " km/L";
+
+
+    infoElement.innerHTML = `
+
+        <div>
+            💰 Preço médio:
+            <b>
+                ${money(
+                    data.averagePrice
+                )}
+            </b>
+        </div>
+
+        <div>
+            💵 Custo por km:
+            <b>
+                ${money(
+                    data.costKm
+                )}
+            </b>
+        </div>
+
+        <div>
+            📏 Km calculados:
+            <b>
+                ${data.totalKm.toFixed(0)}
+                km
+            </b>
+        </div>
+
+        <div>
+            ⛽ Litros utilizados:
+            <b>
+                ${data.totalLiters.toFixed(2)}
+                L
+            </b>
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+
+function calculateDashboard(
+    history
+) {
+
+
+    const totalSpent =
+        history.reduce(
+            (
+                total,
+                item
+            ) =>
+                total +
+                item.total,
+            0
+        );
+
+
+    const now =
+        new Date();
+
+    const currentMonth =
+        `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+    const monthlySpent =
+        history
+            .filter(
+                item =>
+                    item.date &&
+                    item.date.slice(0, 7) === currentMonth
+            )
+            .reduce(
+                (total, item) =>
+                    total + Number(item.total || item.price * item.liters || 0),
+                0
+            );
+
+
+    const totalLiters =
+        history.reduce(
+            (
+                total,
+                item
+            ) =>
+                total +
+                item.liters,
+            0
+        );
+
+
+    const first =
+        history[
+            history.length - 1
+        ];
+
+
+    const last =
+        history[0];
+
+
+    let totalKm =
+        0;
+
+
+    if (
+        first &&
+        last &&
+        last.odometer >
+        first.odometer
+    ) {
+
+        totalKm =
+            last.odometer -
+            first.odometer;
+
+    }
+
+
+    document.getElementById(
+        "dashboard"
+    ).innerHTML = `
+
+        <div class="metric">
+
+            <span>
+                Abastecimentos
+            </span>
+
+            <strong>
+                ${history.length}
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>
+                Total gasto
+            </span>
+
+            <strong>
+                ${money(totalSpent)}
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>
+                Gasto neste mês
+            </span>
+
+            <strong>
+                ${money(monthlySpent)}
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>
+                Litros abastecidos
+            </span>
+
+            <strong>
+                ${totalLiters.toFixed(1)}
+                L
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>
+                Km registrados
+            </span>
+
+            <strong>
+                ${totalKm.toFixed(0)}
+                km
+            </strong>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   COMPARAR COMBUSTÍVEIS
+========================================= */
+
+
+function compareFuel(
+    ethanol,
+    gasoline
+) {
+
+
+    const winner =
+        document.getElementById(
+            "winner"
+        );
+
+
+    const alert =
+        document.getElementById(
+            "comparisonAlert"
+        );
+
+
+    if (
+        !ethanol ||
+        !gasoline
+    ) {
+
+        winner.innerHTML = `
+
+            <small>
+                Comparação
+            </small>
+
+            <strong>
+                Aguardando dados
+            </strong>
+
+            <div>
+
+                Registre abastecimentos
+                suficientes de etanol
+                e gasolina para
+                descobrir qual apresenta
+                menor custo.
+
+            </div>
+
+        `;
+
+
+        alert.innerHTML = `
+
+            💡 O sistema precisa
+            calcular o consumo real
+            dos dois combustíveis
+            antes de fazer a comparação.
+
+        `;
+
+        return;
+
+    }
+
+
+    if (
+        ethanol.costKm <
+        gasoline.costKm
+    ) {
+
+
+        const difference =
+            gasoline.costKm -
+            ethanol.costKm;
+
+
+        winner.innerHTML = `
+
+            <small>
+                Resultado pelo custo real
+            </small>
+
+            <strong>
+                🟢 Etanol
+            </strong>
+
+            <div>
+
+                O etanol apresenta
+                menor custo por quilômetro.
+
+                <br>
+
+                Economia:
+                <b>
+                    ${money(difference)}
+                    por km
+                </b>
+
+            </div>
+
+        `;
+
+
+    } else {
+
+
+        const difference =
+            ethanol.costKm -
+            gasoline.costKm;
+
+
+        winner.innerHTML = `
+
+            <small>
+                Resultado pelo custo real
+            </small>
+
+            <strong>
+                🔵 Gasolina
+            </strong>
+
+            <div>
+
+                A gasolina apresenta
+                menor custo por quilômetro.
+
+                <br>
+
+                Economia:
+                <b>
+                    ${money(difference)}
+                    por km
+                </b>
+
+            </div>
+
+        `;
+
+    }
+
+
+    const ratio =
+        gasoline.averageKmL > 0
+            ? ethanol.averageKmL /
+              gasoline.averageKmL *
+              100
+            : 0;
+
+
+    alert.innerHTML = `
+
+        📊 <b>Comparação do consumo</b>
+
+        <br><br>
+
+        Seu carro faz aproximadamente:
+
+        <b>
+            ${ethanol.averageKmL.toFixed(2)}
+            km/L
+        </b>
+        no etanol
+
+        e
+
+        <b>
+            ${gasoline.averageKmL.toFixed(2)}
+            km/L
+        </b>
+        na gasolina.
+
+        <br><br>
+
+        A relação de consumo
+        é de aproximadamente
+        <b>
+            ${ratio.toFixed(1)}%
+        </b>.
+
+    `;
+
+}
+
+
+/* =========================================
+   HISTÓRICO
+========================================= */
+
+
+function renderHistory() {
+
+
+    const history =
+        getHistory();
+
+
+    const element =
+        document.getElementById(
+            "history"
+        );
+
+
+    if (
+        history.length === 0
+    ) {
+
+        element.innerHTML = `
+
+            <p class="note">
+
+                Nenhum abastecimento
+                registrado ainda.
+
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    element.innerHTML =
+        history
+            .map(
+                (
+                    item,
+                    index
+                ) => `
+
+                    <div
+                        class="history-item"
+                    >
+
+                        <div
+                            class="history-info"
+                        >
+
+                            <b>
+                                ${item.fuel}
+                            </b>
+
+                            <br>
+
+                            📅
+                            ${formatDate(
+                                item.date
+                            )}
+
+                            <br>
+
+                            📏
+                            ${item.odometer}
+                            km
+
+                            <br>
+
+                            ⛽
+                            ${item.liters.toFixed(2)}
+                            litros
+
+                            <br>
+
+                            💰
+                            ${money(
+                                item.price
+                            )}/L
+
+                            <br>
+
+                            🔋 Tanque:
+
+                            ${
+                                item.fullTank === "sim"
+                                    ? "Completo"
+                                    : "Não completado"
+                            }
+
+                        </div>
+
+
+                        <div
+                            class="history-value"
+                        >
+
+                            ${money(
+                                item.total
+                            )}
+
+                            <br>
+
+                            <button
+                                class="btn-danger"
+                                style="
+                                    margin-top:8px;
+                                    padding:7px 10px;
+                                "
+                                onclick="
+                                    deleteFuel(
+                                        ${index}
+                                    )
+                                "
+                            >
+
+                                Excluir
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+}
+
+
+/* =========================================
+   FORMATAR DATA
+========================================= */
+
+
+function formatDate(
+    date
+) {
+
+
+    const parts =
+        date.split("-");
+
+
+    if (
+        parts.length !== 3
+    ) {
+
+        return date;
+
+    }
+
+
+    return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+    );
+
+}
+
+
+/* =========================================
+   EXCLUIR
+========================================= */
+
+
+function deleteFuel(
+    index
+) {
+
+
+    const history =
+        getHistory();
+
+
+    history.splice(
+        index,
+        1
+    );
+
+
+    saveHistory(
+        history
+    );
+
+
+    renderHistory();
+
+    calculate();
+
+}
+
+
+/* =========================================
+   LIMPAR TUDO
+========================================= */
+
+
+function clearHistory() {
+
+
+    const confirmation =
+        confirm(
+            "Tem certeza que deseja apagar todos os abastecimentos?"
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        "fuelHistory"
+    );
+
+
+    renderHistory();
+
+    calculate();
+
+}
+
+
+/* =========================================
+   SEM DADOS
+========================================= */
+
+
+function showEmpty() {
+
+
+    calculateDashboard([]);
+
+
+    document.getElementById(
+        "winner"
+    ).innerHTML = `
+
+        <small>
+            Resultado
+        </small>
+
+        <strong>
+            Aguardando dados
+        </strong>
+
+        <div>
+            Registre seus abastecimentos
+            para começar a calcular.
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   INICIALIZAÇÃO
+========================================= */
+
+
+const profileFieldIds = [
+    "profileName",
+    "profileEmail",
+    "profilePhone",
+    "profileCity"
+];
+
+const vehicleFieldIds = [
+    "vehicle",
+    "vehicleYear"
+];
+
+
+vehicleFieldIds.forEach(
+    fieldId => {
+
+        const field =
+            document.getElementById(fieldId);
+
+        field.addEventListener(
+            "input",
+            saveVehicleData
+        );
+
+        field.addEventListener(
+            "change",
+            saveVehicleData
+        );
+
+    }
+);
+
+
+const savedProfile =
+    restoreFields(
+        "driverProfile",
+        profileFieldIds
+    );
+
+restoreFields(
+    "vehicleData",
+    vehicleFieldIds
+);
+
+saveFields(
+    "vehicleData",
+    vehicleFieldIds
+);
+
+const savedCredential =
+    readSavedData("driverCredential");
+
+document.getElementById("profileEmail").value =
+    savedCredential.email ||
+    savedProfile.profileEmail ||
+    "";
+
+setAuthMode("login");
+
+
+calculatePriceComparison();
+
+
+/* Data atual */
+
+document.getElementById(
+    "date"
+).value =
+    today();
+
+
+/* Carregar */
+
+renderHistory();
+
+calculate();
+
+
+</script>
+
+
+</body>
+
+</html>
